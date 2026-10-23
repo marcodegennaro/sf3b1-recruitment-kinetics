@@ -3,10 +3,12 @@
 Code and analysis for my Master's thesis in Quantitative and Computational Biosciences, University of Padova (A.Y. 2025/2026).
 
 **Author:** Marco De Gennaro
+
 **Supervisor:** Prof.ssa Chiara Romualdi (University of Padova)
+
 **Co-supervisor:** Dr. Rosa Martinez-Corral (UPF)
 
-> **Note on data:** the experimental data used in this project are private and are **not included** in this repository. The code can be read and reviewed as it is, but the full pipeline can only be re-run with the data files. See the [Data](#data) section.
+> **Note on data:** the experimental data used in this project are private and are **not included** in this repository. The code can be read and reviewed as it is, but the full pipeline can only be re-run with the data files. 
 
 ---
 
