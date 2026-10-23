@@ -42,17 +42,6 @@ flowchart LR
     G --> H[Parameter comparison<br/>PladB vs H3B-8800]
 ```
 
-## Key figures
-
-**The four-state model**
-![Four-state kinetic graph](docs/figures/model_graph.png)
-
-**Model predictions vs. empirical dose-response curves**
-![Model vs data](docs/figures/model_vs_data.png)
-
-**Shared parameters, PladB vs. H3B-8800 (bootstrap)**
-![Bootstrap shared parameters](docs/figures/bootstrap_shared_params.png)
-
 ## The model in short
 
 | Code | State | Meaning |
@@ -91,8 +80,7 @@ sf3b1-recruitment-kinetics/
 │   ├── 02_Best_Model_Prediction.ipynb
 │   └── 03_Parameter_Estimation_and_Analysis.ipynb
 └── docs/
-    ├── thesis.pdf
-    └── figures/
+    └── thesis.pdf
 ```
 
 The modules in `src/` are imported by name (`import model_database as db`), so they are kept flat. The first cell of each notebook adds `../src` to the path.
