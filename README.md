@@ -6,6 +6,8 @@ Code and analysis for my Master's thesis in Quantitative and Computational Biosc
 **Supervisor:** Prof.ssa Chiara Romualdi (University of Padova)
 **Co-supervisor:** Dr. Rosa Martinez-Corral (UPF)
 
+> **Note on data:** the experimental data used in this project are private and are **not included** in this repository. The code can be read and reviewed as it is, but the full pipeline can only be re-run with the data files. See the [Data](#data) section.
+
 ---
 
 ## Overview
@@ -33,7 +35,7 @@ This repository is the code behind that analysis. It is not a finished model of 
 
 ```mermaid
 flowchart LR
-    A[Raw read counts<br/>fitness_calc_PB_H3B.xlsx] --> B[CLR normalization in R<br/>shared reference set]
+    A[Raw read counts<br/>private data] --> B[CLR normalization in R<br/>shared reference set]
     B --> C[normalized_matrix_PB.csv<br/>normalized_matrix_H.csv]
     C --> D[BP strength classification<br/>quartiles + SVM-BPfinder check]
     D --> E[Stratified LFC data<br/>BP class x Decoy x PYT]
@@ -62,10 +64,7 @@ sf3b1-recruitment-kinetics/
 ├── README.md
 ├── requirements.txt
 ├── data/
-│   ├── README.md          # origin of each file
-│   ├── raw/               # fitness_calc_PB_H3B.xlsx
-│   ├── processed/         # normalized matrices, LFC files
-│   └── external/          # SVM-BPfinder input and output
+│   └── README.md          # describes the expected data files (data not included)
 ├── R/
 │   └── Compositional_Normalization_Correction.R
 ├── src/
@@ -100,7 +99,13 @@ The modules in `src/` are imported by name (`import model_database as db`), so t
 | `notebooks/02_...` | Model selection and fits for PladB and H3B-8800. |
 | `notebooks/03_...` | Bootstrap, parameter comparison between drugs, identifiability checks. |
 
+The notebooks are saved with their outputs, so you can read the results and plots without running anything.
+
 ## Data
+
+The data are **private** and are not part of this repository. This covers the raw read counts and every file derived from them (normalized matrices, LFC tables, SVM-BPfinder input and output).
+
+The code expects these files:
 
 | File | Origin |
 |---|---|
@@ -109,7 +114,14 @@ The modules in `src/` are imported by name (`import model_database as db`), so t
 | `log_reads_norm.csv`, `lfc_results.csv` | Earlier normalization, kept for the comparison in Figures 6 to 8 of the thesis. |
 | SVM-BPfinder files | Input `.fasta` and output `.txt` from the external tool. |
 
-See `data/README.md` for access notes.
+If you need access to the data, please contact me. See `data/README.md` for the expected columns and file locations.
+
+## What you can check without the data
+
+- The model definition and the steady-state solution (`model_database.py`, `simulation_core.py`). With a parameter set, you can simulate the model without any experimental data.
+- The fitting logic and the objective function (`fitting_core.py`).
+- The results and plots saved in the notebook outputs.
+- The full methods and results in the thesis (`docs/thesis.pdf`).
 
 ## Requirements
 
@@ -117,7 +129,7 @@ See `data/README.md` for access notes.
 - R 4.x (thesis used 4.4.2) with `readxl`, `zCompositions`, `matrixStats`, `tidyverse`
 - SVM-BPfinder, only if you want to redo the BP validation
 
-## Quick start
+## Quick start (with access to the data)
 
 ```bash
 # 1. Clone
@@ -135,10 +147,10 @@ pip install -r requirements.txt
 install.packages(c("readxl", "zCompositions", "matrixStats", "tidyverse"))
 ```
 
-4. Put `fitness_calc_PB_H3B.xlsx` in `data/raw/`. Update the path variables at the top of the R script and of each notebook.
+4. Put the data files in a local folder (for example `data/raw/` and `data/processed/`). Do not commit them. Update the path variables at the top of the R script and of each notebook.
 
 ```bash
-# 5. Normalization (run from data/processed, the output lands in the working folder)
+# 5. Normalization (run from the folder where the output should go)
 cd data/processed
 Rscript ../../R/Compositional_Normalization_Correction.R
 cd ../..
@@ -156,7 +168,7 @@ Run the notebooks in this order:
 Optional, to redo the SVM-BPfinder step:
 
 ```bash
-python3 svm_bpfinder.py -i data/external/test_sequence_Strong_PYT.fasta -s Hsap -l 100 -d 10 > data/external/BP_results_Strong_PYT.txt
+python3 svm_bpfinder.py -i test_sequence_Strong_PYT.fasta -s Hsap -l 100 -d 10 > BP_results_Strong_PYT.txt
 ```
 
 Expected result: weighted R² of about 0.84 (PladB) and 0.85 (H3B-8800).
